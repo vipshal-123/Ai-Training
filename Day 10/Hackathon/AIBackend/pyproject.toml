@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = "RAG-based Elevator Pitch Generator"
+authors = ["Vipshal wg <vipshal.wg@snssquare.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+uvicorn = "^0.34.3"
+fastapi = "^0.115.12"
+python-decouple = "^3.8"
+motor = "^3.7.1"
+beanie = "^1.30.0"
+google-auth = "^2.40.3"
+google-auth-oauthlib = "^1.2.2"
+google-auth-httplib2 = "^0.2.0"
+google-api-python-client = "^2.172.0"
+python-dotenv = "^1.1.0"
+fastapi-jwt = "^0.3.0"
+pyjwt = "^2.10.1"
+langchain-google-genai = "^2.1.5"
+pypdf2 = "^3.0.1"
+docx = "^0.2.4"
+langgraph = "^0.4.8"
+aiofiles = "^24.1.0"
+python-docx = "^1.2.0"
+python-multipart = "^0.0.20"
+
+[tool.poetry.scripts]
+server = "backend.server:start_server"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
