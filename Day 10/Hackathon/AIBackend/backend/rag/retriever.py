@@ -1,20 +1,19 @@
-# backend/rag/retriever.py
-
 import json
+from langchain_core.documents import Document
 
-# Load dummy resource DB
-with open("backend/rag/resource_db.json") as f:
-    RESOURCE_DB = json.load(f)
-
-def retrieve_resources(role: str, company: str, tools: str) -> list:
-    keywords = f"{role} {company} {tools}".lower()
+with open("backend/rag/rag_onboarding_resources.json", "r") as f:
+    raw_resources = json.load(f)
     
-    resource_pool = RESOURCE_DB  # Your DB or JSON
-    
-    matches = []
-    for item in resource_pool:
-        if any(tag in keywords for tag in item.get("tags", [])):
-            matches.append(item)
-    
-    return matches
+documents = [
+    Document(
+        page_content=f"{item['title']}. {item['description']}",
+        metadata={
+            "id": item["id"],
+            "tags": item["tags"],
+            "link": item["link"],
+            "source": item["source"]
+        }
+    )
+    for item in raw_resources
+]
 

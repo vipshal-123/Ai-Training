@@ -8,9 +8,9 @@ from backend.config.main import CORS_ORIGIN, MONGO_URI
 import logging
 
 from backend.models.User import User
-from backend.models.UploadedFile import UploadedFile 
-from backend.models.Candidate import Candidate
-from backend.models.AnalysisResult import AnalysisResult
+from backend.models.Offer import Offer
+from backend.models.Preference import Preference
+from backend.models.CandidateReport import CandidateReport
 
 
 @asynccontextmanager
@@ -20,9 +20,9 @@ async def lifespan(app: FastAPI):
         database=app.db,
         document_models=[
             User,
-            UploadedFile,
-            Candidate,
-            AnalysisResult
+            Offer,
+            Preference,
+            CandidateReport
         ],
     )
     logging.info("Database initialized")

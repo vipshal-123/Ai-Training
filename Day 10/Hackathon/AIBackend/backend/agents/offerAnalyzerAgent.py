@@ -1,26 +1,51 @@
-from langgraph.graph import StateGraph, END
-from langgraph.prebuilt import ToolNode
-from backend.utils.parsers import parse_offer_file
-from backend.prompt.prompt import OFFER_EXTRACTION_PROMPT
-from backend.llm.gemini import gemini_chat
-from typing import TypedDict
-import re
 import json
-from backend.utils.parsers import parse_gemini_response
+from backend.utils.parsers import extract_text_from_pdf
+from backend.llm.gemini import model
+from langgraph.graph import StateGraph
+from typing import TypedDict
 
-class OfferState(TypedDict):
-    file_path: str
-    offer_components: dict
+class AgentType(TypedDict):
+    offer_text: str
+    offer_analysis: dict
 
-def extract_offer_text(state: OfferState) -> OfferState:
-    raw_text = parse_offer_file(state["file_path"])
-    response = gemini_chat(OFFER_EXTRACTION_PROMPT.format(offer_text=raw_text))
-    parsed = parse_gemini_response(response)
-    return {**state, "offer_components": parsed}
+def offer_analyzer_agent(state: AgentType) -> AgentType:
+    offer_text = state["offer_text"]
+    prompt = f"""
+    You are an HR assistant. Extract structured information from the following job offer letter:
 
-def build_offer_analyzer_graph():
-    builder = StateGraph(OfferState)
-    builder.add_node("extract_text", extract_offer_text)
-    builder.set_entry_point("extract_text")
-    builder.add_edge("extract_text", END)
+    Text:
+    {offer_text}
+
+    Return in JSON format with fields:
+    - job_title
+    - salary
+    - location
+    - joining_date
+    - bond_terms
+    """
+    response = model.generate_content(prompt)
+    
+    return {"offer_analysis": response.text}
+
+def build_graph():
+    builder = StateGraph(AgentType)
+
+
+    builder.add_node("OfferAnalyzer", offer_analyzer_agent)
+    builder.set_entry_point("OfferAnalyzer")
+    builder.set_finish_point("OfferAnalyzer")
     return builder.compile()
+
+
+offer_graph = build_graph()
+
+def run_offer_analyze_agent(offer_path: str) -> dict:
+    offer_text = extract_text_from_pdf(offer_path)
+
+    result = offer_graph.invoke({"offer_text": offer_text})
+
+    json_string = result["offer_analysis"].strip().replace('```json\n', '').replace('\n```', '')
+    formatted_dict = json.loads(json_string)
+    
+    return formatted_dict
+

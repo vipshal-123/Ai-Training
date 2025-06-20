@@ -1,0 +1,75 @@
+[
+  {
+    "id":"res_001",
+    "title":"Java Backend Developer Roadmap",
+    "description":"Comprehensive guide to mastering Java backend technologies including Spring Boot and RESTful APIs.",
+    "tags":[
+      "java",
+      "backend",
+      "spring boot"
+    ],
+    "link":"https:\/\/roadmap.sh\/backend",
+    "source":"roadmap.sh"
+  },
+  {
+    "id":"res_002",
+    "title":"AWS Essentials Training",
+    "description":"Beginner to intermediate level training on core AWS services used in production environments.",
+    "tags":[
+      "aws",
+      "cloud",
+      "devops"
+    ],
+    "link":"https:\/\/aws.amazon.com\/training\/",
+    "source":"aws.amazon.com"
+  },
+  {
+    "id":"res_003",
+    "title":"Effective Team Communication",
+    "description":"Soft skills course covering workplace communication, collaboration, and conflict resolution.",
+    "tags":[
+      "soft skills",
+      "communication",
+      "teamwork"
+    ],
+    "link":"https:\/\/coursera.org\/learn\/teamwork-skills",
+    "source":"coursera.org"
+  },
+  {
+    "id":"res_004",
+    "title":"MERN Stack Full Course",
+    "description":"Hands-on course to build full-stack web apps using MongoDB, Express, React, and Node.",
+    "tags":[
+      "mern",
+      "fullstack",
+      "react",
+      "nodejs"
+    ],
+    "link":"https:\/\/www.udemy.com\/course\/mern-stack-project",
+    "source":"udemy.com"
+  },
+  {
+    "id":"res_005",
+    "title":"Python for Data Science",
+    "description":"Learn Python essentials for data analysis, visualization, and machine learning.",
+    "tags":[
+      "python",
+      "data science",
+      "machine learning"
+    ],
+    "link":"https:\/\/datacamp.com\/courses\/tech:python",
+    "source":"datacamp.com"
+  },
+  {
+    "id":"res_006",
+    "title":"Kubernetes for Developers",
+    "description":"Practical Kubernetes training for deploying and managing containerized applications.",
+    "tags":[
+      "kubernetes",
+      "devops",
+      "containers"
+    ],
+    "link":"https:\/\/kubernetes.io\/training",
+    "source":"kubernetes.io"
+  }
+]

@@ -1,30 +1,51 @@
-from langgraph.graph import StateGraph, END
-from backend.utils.parsers import parse_offer_file, parse_resume_file
-from backend.prompt.prompt import PREFERENCE_ALIGNMENT_PROMPT
-from backend.llm.gemini import gemini_chat
+import json
+from backend.utils.parsers import extract_text_from_pdf
+from backend.llm.gemini import model
+from langgraph.graph import StateGraph
 from typing import TypedDict
-from backend.utils.parsers import parse_gemini_response
 
-class PreferenceState(TypedDict):
-    offer_components: dict
-    resume_path: str
-    placement_data: str
+class AgentType(TypedDict):
+    resume_text: str
     preference_alignment: dict
+    
+def candidate_preference_agent(state):
+    resume_text = state["resume_text"]
+    prompt = f"""
+    You are a career guidance AI assistant. A student's resume is provided below.
+    Please extract their job-related preferences in this structured JSON format:
 
-def extract_resume_text(state: PreferenceState) -> PreferenceState:
-    resume_text = parse_resume_file(state["resume_path"])
-    prompt = PREFERENCE_ALIGNMENT_PROMPT.format(
-        offer=state["offer_components"],
-        resume=resume_text,
-        placement_data=state["placement_data"]
-    )
-    response = gemini_chat(prompt)
-    parsed = parse_gemini_response(response)
-    return {**state, "preference_alignment": parsed}
+    {{
+      "preferred_location": "...",
+      "interests": ["...", "..."],
+      "skills": ["...", "..."],
+      "expected_ctc": "...",
+      "career_goals": "..."
+    }}
 
-def build_candidate_preference_graph():
-    builder = StateGraph(PreferenceState)
-    builder.add_node("extract_resume", extract_resume_text)
-    builder.set_entry_point("extract_resume")
-    builder.add_edge("extract_resume", END)
+    Resume Text:
+    {resume_text}
+    """
+
+    response = model.generate_content(prompt)
+    return {"preference_alignment": response.text}
+
+
+def build_graph():
+    builder = StateGraph(AgentType)
+
+    builder.add_node("CandidatePreference", candidate_preference_agent)
+    builder.set_entry_point("CandidatePreference")
+    builder.set_finish_point("CandidatePreference")
     return builder.compile()
+
+candidate_graph = build_graph()
+
+def run_candidate_preference_agent(offer_path: str) -> dict:
+    resume_text = extract_text_from_pdf(offer_path)
+
+    result = candidate_graph.invoke({"resume_text": resume_text})
+
+    json_string = result["preference_alignment"].strip().replace('```json\n', '').replace('\n```', '')
+    formatted_dict = json.loads(json_string)
+    
+    return formatted_dict

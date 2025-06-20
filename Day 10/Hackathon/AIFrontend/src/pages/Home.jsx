@@ -207,10 +207,9 @@ const Home = () => {
       console.log("✅ Result:", result);
 
       if (result.success) {
-        alert("Files analyzed successfully!");
         setResults(mockResults);
         setCandidates(mockCandidates);
-        setActiveTab("results"); // or dashboard
+        setActiveTab("results");
         await fetchData();
         setLoading(false);
       } else {

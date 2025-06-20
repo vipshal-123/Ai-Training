@@ -71,6 +71,6 @@ Recommends:
 ✅ Output: Structured onboarding resources
 ⚠️ Uses fallback defaults (no RAG)
 
-![alt text](<Untitled Diagram.drawio (1).png>)
+![alt text](<final image to go black.drawio.png>)
 
-demo link:- https://drive.google.com/file/d/1z4It41j-Uoui6-Y-GKjOw9j-zUoZLhrW/view?usp=sharing
+demo link:- https://drive.google.com/file/d/1VARpI7uebWdlZsHNmyZNGgm4QdjyDfjr/view?usp=sharing
