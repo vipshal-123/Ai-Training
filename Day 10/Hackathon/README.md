@@ -1,3 +1,8 @@
+pip install poetry
+poetry install
+npm install
+npm run dev
+
 📊 Offer Acceptance Predictor & Pre-Onboarding Enabler
 An Agentic AI System that predicts the likelihood of a student accepting a job offer and prepares personalized onboarding resources — empowering placement officers with actionable insights.
 
@@ -67,3 +72,5 @@ Recommends:
 ⚠️ Uses fallback defaults (no RAG)
 
 ![alt text](<Untitled Diagram.drawio (1).png>)
+
+demo link:- https://drive.google.com/file/d/1z4It41j-Uoui6-Y-GKjOw9j-zUoZLhrW/view?usp=sharing
